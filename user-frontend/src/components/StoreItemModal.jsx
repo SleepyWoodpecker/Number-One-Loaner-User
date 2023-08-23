@@ -109,6 +109,7 @@ function StoreItemModal({
       sizedItems.current.forEach((sizedItem) => {
         // eslint-disable-next-line
         const [itemName, itemSize] = sizedItem.name.split(" - ");
+        // find the specific item from the store
         if (
           itemName === storeItem.name &&
           (`(Size ${size})` === itemSize || `(${size})` === itemSize)
