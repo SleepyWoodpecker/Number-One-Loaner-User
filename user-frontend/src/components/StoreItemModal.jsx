@@ -109,7 +109,10 @@ function StoreItemModal({
       sizedItems.current.forEach((sizedItem) => {
         // eslint-disable-next-line
         const [itemName, itemSize] = sizedItem.name.split(" - ");
-        if (itemName === storeItem.name && `(Size ${size})` === itemSize) {
+        if (
+          itemName === storeItem.name &&
+          (`(Size ${size})` === itemSize || `(${size})` === itemSize)
+        ) {
           newItem = {
             id: sizedItem.id,
             name: `${itemName} ${itemSize}`,

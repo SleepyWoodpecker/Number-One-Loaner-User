@@ -9,7 +9,7 @@ storeRouter.get("/", async (req, res) => {
   const sizedItems = [];
   const items = [];
   storeItems.forEach((storeItem) => {
-    if (storeItem.name.includes("Size")) {
+    if (storeItem.name.includes(" - ")) {
       sizedItems.push(storeItem);
     } else {
       items.push(storeItem);
