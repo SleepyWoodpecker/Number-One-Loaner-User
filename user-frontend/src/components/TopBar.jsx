@@ -1,13 +1,14 @@
 import React from "react";
 import "../index.css";
 
-function TopBar() {
+function TopBar({ setActivePage }) {
   return (
     <div className="w-full bg-orange-200 h-12 fixed top-0 left-0 right-0 flex justify-between items-center z-30 shadow-md">
       <img
         src={require("../Images/Name.PNG")}
         className="w-64 ml-1"
         alt="Name"
+        onClick={() => setActivePage("Home")}
       />
       <img
         src={require("../Images/Logo.PNG")}

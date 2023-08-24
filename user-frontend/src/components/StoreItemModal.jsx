@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
 import ControlledNumberInput from "./ControlledNumberInput";
-import { showFeedbackMessage } from "../Functions";
+import { showFeedbackMessage, validateQuantity } from "../Functions";
 
 function StoreItemModal({
   closeModal,
@@ -72,9 +72,9 @@ function StoreItemModal({
     e.preventDefault();
     // should add some checking to update the new quantity of the item
     // only add the order if the quantity is positive
-    if (quantity <= 0) {
+    if (!validateQuantity(quantity)) {
       showFeedbackMessage(
-        "Key in a positive quantity of items!",
+        "Quantity must be a number!",
         "red",
         setMessage,
         3500
@@ -109,7 +109,7 @@ function StoreItemModal({
       sizedItems.current.forEach((sizedItem) => {
         // eslint-disable-next-line
         const [itemName, itemSize] = sizedItem.name.split(" - ");
-        // find the specific item from the store
+
         if (
           itemName === storeItem.name &&
           (`(Size ${size})` === itemSize || `(${size})` === itemSize)

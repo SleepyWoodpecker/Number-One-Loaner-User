@@ -9,7 +9,7 @@ import { getStoreItems } from "./Services";
 import TopBar from "./components/TopBar";
 
 function App() {
-  const [activePage, setActivePage] = useState("Request Tracker");
+  const [activePage, setActivePage] = useState("Home");
   const [totalOrder, setTotalOrder] = useState([]);
 
   // shifted the useEffect here because I did not want multiple fetch requests to the server everytime the user clicked on the catalogue page
@@ -66,9 +66,9 @@ function App() {
   return (
     <div
       className="p-4 h-full mb-10 mt-10 mid-point-2:max-w-md mid-point-2:mx-auto"
-      style={{ height: "85.5vh" }}
+      style={{ height: "85vh" }}
     >
-      <TopBar />
+      <TopBar setActivePage={setActivePage} />
       {displayedPage}
       {/* // this is the nav bar at the bottom, but the nav bar cannot accommodate clicking  */}
       <div

@@ -30,4 +30,10 @@ function compareDates(a, b) {
   return convertStringToDate(a) - convertStringToDate(b);
 }
 
-export { getMinDay, showFeedbackMessage, compareDates };
+// ensure that the input is a positive integer
+function validateQuantity(number) {
+  const numberRegex = /^\d+$/;
+  return numberRegex.test(number);
+}
+
+export { getMinDay, showFeedbackMessage, compareDates, validateQuantity };
