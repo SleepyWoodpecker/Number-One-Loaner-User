@@ -35,5 +35,24 @@ function validateQuantity(number) {
   const numberRegex = /^\d+$/;
   return numberRegex.test(number);
 }
+// check if the item's variations should be displayed as a size or type
+function variationLabel(item) {
+  if (item.name === "Uniform Top") {
+    return "Type";
+  }
+  return "Size";
+}
 
-export { getMinDay, showFeedbackMessage, compareDates, validateQuantity };
+// show a notificaiton if the available quantity is less than the requested quantity
+function storeHasStock(storeItem, requestedItem) {
+  return Number(requestedItem.quantity) <= storeItem.quantity;
+}
+
+export {
+  getMinDay,
+  showFeedbackMessage,
+  compareDates,
+  validateQuantity,
+  variationLabel,
+  storeHasStock,
+};

@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
 import ControlledNumberInput from "./ControlledNumberInput";
-import { showFeedbackMessage, validateQuantity } from "../Functions";
+import {
+  showFeedbackMessage,
+  storeHasStock,
+  validateQuantity,
+  variationLabel,
+} from "../Functions";
 
 function StoreItemModal({
   closeModal,
@@ -49,7 +54,7 @@ function StoreItemModal({
           style={{ width: 64.25 }}
           className="text-center"
         >
-          Size:
+          {variationLabel(storeItem)}:
         </label>
         <select
           className="focus-visible:outline-orange-500 border-2 px-1.5 py-0.5 justify-self-end w-36 rounded-md m-2 text-center"
@@ -72,7 +77,7 @@ function StoreItemModal({
     e.preventDefault();
     // should add some checking to update the new quantity of the item
     // only add the order if the quantity is positive
-    if (!validateQuantity(quantity)) {
+    if (!validateQuantity(quantity) || quantity <= 0) {
       showFeedbackMessage(
         "Quantity must be a number!",
         "red",
@@ -104,12 +109,12 @@ function StoreItemModal({
       }
     }
 
+    let newItem, requestedStoreItem;
+
     if (hasSizes) {
-      let newItem;
       sizedItems.current.forEach((sizedItem) => {
         // eslint-disable-next-line
         const [itemName, itemSize] = sizedItem.name.split(" - ");
-
         if (
           itemName === storeItem.name &&
           (`(Size ${size})` === itemSize || `(${size})` === itemSize)
@@ -122,6 +127,7 @@ function StoreItemModal({
             returnedQuantity: 0,
             imgUrl: sizedItem.imgUrl,
           };
+          requestedStoreItem = sizedItem;
         }
       });
       if (totalOrder.findIndex((order) => order.id === newItem.id) !== -1) {
@@ -137,25 +143,38 @@ function StoreItemModal({
         setTotalOrder((totalOrder) => totalOrder.concat(newItem));
       }
     } else {
-      setTotalOrder((previousOrder) =>
-        previousOrder.concat({
+      setTotalOrder((previousOrder) => {
+        newItem = {
           id: storeItemData.id,
           name: storeItemData.name,
           quantity,
           originalQuantity: quantity,
           returnedQuantity: 0,
           imgUrl: storeItemData.imgUrl,
-        })
-      );
+        };
+        requestedStoreItem = storeItemData;
+        return previousOrder.concat(newItem);
+      });
     }
 
     // should figure out if i can do some animation
-    showFeedbackMessage(
-      `${storeItemData.name} added to cart`,
-      "green",
-      setMessage,
-      1000
-    );
+
+    // tell user if the store does not currently have enough quantity to satisfy the order
+    if (!storeHasStock(requestedStoreItem, newItem)) {
+      showFeedbackMessage(
+        `Quantity of ${requestedStoreItem.name} requested is more than we have in stock. While your order has been recorded, we might be unable to fulfil it.`,
+        "yellow",
+        setMessage,
+        4500
+      );
+    } else {
+      showFeedbackMessage(
+        `${storeItemData.name} added to cart`,
+        "green",
+        setMessage,
+        1000
+      );
+    }
 
     // add more functionality, such that if the old order for that item already exists, just udpate the quantity with the new quantity
     closeModal();
