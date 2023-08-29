@@ -21,7 +21,13 @@ function OrderSubmissionPage({ totalOrder, setTotalOrder }) {
   const submitOrder = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // for now, exit if any of the fields are empty
+
+    if (!email.includes("@")) {
+      showFeedbackMessage(`Email is invalid`, "red", setMessage, 3500);
+      setIsSubmitting(false);
+      return;
+    }
+
     const request = await submitNewRequest({
       requester: name,
       unit: unit.toUpperCase(),
@@ -32,7 +38,7 @@ function OrderSubmissionPage({ totalOrder, setTotalOrder }) {
       number,
       time,
     });
-    // console.log(request.id);
+
     const emailResponse = await sendEmail({ email, name }, request.id);
     if (emailResponse.ok) {
       showFeedbackMessage(
@@ -42,14 +48,6 @@ function OrderSubmissionPage({ totalOrder, setTotalOrder }) {
         setMessage,
         3500
       );
-    } else {
-      showFeedbackMessage(
-        `An error occurred while sending an email to ${email}. Do check that it has been keyed in properly and re-submit a request. If the error still persists, do reach out to us. We apologize for any inconvenience caused. `,
-        "red",
-        setMessage,
-        3500
-      );
-      return;
     }
     setEmail("");
     setSizingDate("");

@@ -126,6 +126,7 @@ function StoreItemModal({
             originalQuantity: quantity,
             returnedQuantity: 0,
             imgUrl: sizedItem.imgUrl,
+            consolidatedItemId: sizedItem.consolidatedItemId,
           };
           requestedStoreItem = sizedItem;
         }
