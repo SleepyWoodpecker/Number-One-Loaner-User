@@ -5,7 +5,7 @@ import MessageBox from "./MessageBox";
 import RequestTable from "./RequestTable";
 import { LuHistory } from "react-icons/lu";
 
-function RequestTracker() {
+function RequestTracker({ setRequestToAdd, setActivePage }) {
   const [searchId, setSearchId] = useState("");
   const [requestData, setRequestData] = useState(null);
   const [showMessage, setShowMessage] = useState(false);
@@ -36,7 +36,6 @@ function RequestTracker() {
 
   const getLatestRequest = (e) => {
     const latestRequest = localStorage.getItem("requestId");
-    console.log(latestRequest);
     if (!latestRequest) {
       setShowRequestRetrieval(
         <MessageBox color={"red"}>
@@ -56,7 +55,12 @@ function RequestTracker() {
     requestDisplay = "";
   } else if (requestData.id) {
     requestDisplay = (
-      <RequestTable requestData={requestData} setRequestData={setRequestData} />
+      <RequestTable
+        requestData={requestData}
+        setRequestData={setRequestData}
+        setRequestToAdd={setRequestToAdd}
+        setActivePage={setActivePage}
+      />
     );
   } else if (requestData.error || requestData === "") {
     requestDisplay = showMessage && (

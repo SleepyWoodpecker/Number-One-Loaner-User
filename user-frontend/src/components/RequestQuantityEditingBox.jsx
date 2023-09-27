@@ -4,7 +4,12 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 import { validateQuantity } from "../Functions";
 
-function RequestQuantityEditingBox({ order, setTotalOrder, width }) {
+function RequestQuantityEditingBox({
+  order,
+  handleChangeRequest,
+  width,
+  handleDeleteItemRequest,
+}) {
   const originalQuantity = useRef(order.quantity);
   const [isEditing, setIsEditing] = useState(false);
   const [newQuantity, setNewQuantity] = useState(order.quantity);
@@ -25,10 +30,13 @@ function RequestQuantityEditingBox({ order, setTotalOrder, width }) {
       // show a return message about stuff being wrong
       return;
     } else {
-      setTotalOrder(order.id, newQuantity);
+      handleChangeRequest(order.id, newQuantity);
       originalQuantity.current = newQuantity;
     }
     setIsEditing(false);
+  };
+  const handleDelete = () => {
+    handleDeleteItemRequest(order.id);
   };
 
   return (
@@ -55,7 +63,7 @@ function RequestQuantityEditingBox({ order, setTotalOrder, width }) {
         ) : (
           <>
             <HiOutlinePencilSquare onClick={handleEditing} size={18} />
-            <RiDeleteBin6Line onClick={() => removeItem(order.id)} size={17} />
+            <RiDeleteBin6Line onClick={handleDelete} size={17} />
           </>
         )}
       </div>

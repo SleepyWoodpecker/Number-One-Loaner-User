@@ -2,8 +2,12 @@ import React from "react";
 import RequestQuantityEditingBox from "./RequestQuantityEditingBox";
 import { editRequest } from "../Services";
 
-function RequestTable({ requestData, setRequestData }) {
-  console.log(requestData);
+function RequestTable({
+  requestData,
+  setRequestData,
+  setRequestToAdd,
+  setActivePage,
+}) {
   const {
     requester,
     status,
@@ -32,7 +36,7 @@ function RequestTable({ requestData, setRequestData }) {
       displayDate = `Return: ${returnDate}`;
   }
 
-  const handleChangeRequestData = async (id, newQuantity) => {
+  const handleChangeRequest = async (id, newQuantity) => {
     const modifiedRequestedItems = requestData.requestedItems.map((item) => {
       return item.id === id
         ? { ...item, quantity: newQuantity, originalQuantity: newQuantity }
@@ -46,6 +50,23 @@ function RequestTable({ requestData, setRequestData }) {
     await editRequest(requestData.id, modifiedOrder);
   };
 
+  const handleDeleteItemRequest = async (itemId) => {
+    const modifiedRequestedItems = requestData.requestedItems.filter((item) => {
+      return item.id !== itemId;
+    });
+    const modifiedOrder = {
+      ...requestData,
+      requestedItems: modifiedRequestedItems,
+    };
+    setRequestData(modifiedOrder);
+    await editRequest(requestData.id, modifiedOrder);
+  };
+
+  const handleAddRequests = () => {
+    setRequestToAdd(requestData.id);
+    setActivePage("Home");
+  };
+
   return (
     <div className="w-full mx-2 flex flex-col mt-8">
       {/* show sizing date */}
@@ -55,7 +76,7 @@ function RequestTable({ requestData, setRequestData }) {
           {status === "Pending" ? (
             <button
               className="text-sm bg-orange-200 rounded-md p-1"
-              onClick={() => console.log("show menu to add item")}
+              onClick={handleAddRequests}
             >
               Add Items
             </button>
@@ -88,7 +109,8 @@ function RequestTable({ requestData, setRequestData }) {
               {status === "Pending" ? (
                 <RequestQuantityEditingBox
                   order={item}
-                  setTotalOrder={handleChangeRequestData}
+                  handleChangeRequest={handleChangeRequest}
+                  handleDeleteItemRequest={handleDeleteItemRequest}
                   width="24"
                 />
               ) : (

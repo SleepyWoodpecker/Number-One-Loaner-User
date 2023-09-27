@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StoreItem from "./StoreItem";
 import SearchBar from "./SearchBar";
+import { showFeedbackMessage } from "../Functions";
 
 function StoreItemGallery({
   setTotalOrder,
@@ -10,8 +11,21 @@ function StoreItemGallery({
   sizedItems,
   originalStore,
   requestToAdd,
+  setRequestToAdd,
 }) {
   const [searchInput, setSearchInput] = useState("");
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (requestToAdd) {
+      showFeedbackMessage(
+        `You are currently editing your request`,
+        `yellow`,
+        setMessage,
+        4000
+      );
+    }
+  }, [requestToAdd]);
 
   let storeItemsDisplay =
     storeItems.length === 0
@@ -45,19 +59,24 @@ function StoreItemGallery({
     return;
   };
 
-  let addingStatus = "";
+  const removeRequestModification = () => setRequestToAdd(null);
 
-  if (requestToAdd) {
+  let addingStatus = "";
+  if (requestToAdd)
     addingStatus = (
-      <>
-        <button>back</button>
-        <div className="bg-green-200">You are editing a request</div>
-      </>
+      <div className="mx-3 flex justify-center items-center">
+        <div
+          className="bg-red-200 rounded-md p-1 px-3 text-sm text-center"
+          onClick={removeRequestModification}
+        >
+          Exit request editing mode
+        </div>
+      </div>
     );
-  }
 
   return (
     <div className="flex justify-evenly flex-col h-full">
+      {message}
       {addingStatus}
       <SearchBar
         placeholder="Search Store Items"

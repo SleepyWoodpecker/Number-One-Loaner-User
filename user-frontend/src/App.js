@@ -16,7 +16,7 @@ function App() {
   const [storeItems, setStoreItems] = useState([]);
   const sizedItems = useRef([]);
   const consolidatedItems = useRef(null);
-  const [requestToAdd, setRequestToAdd] = useState("6513bb55c682fba2ebe20b50");
+  const [requestToAdd, setRequestToAdd] = useState(null);
 
   useEffect(() => {
     const sotreItemsRequest = async () => {
@@ -41,6 +41,7 @@ function App() {
         sizedItems={sizedItems}
         originalStore={consolidatedItems}
         requestToAdd={requestToAdd}
+        setRequestToAdd={setRequestToAdd}
       />
     );
   } else if (activePage === "Shopping Cart") {
@@ -51,7 +52,12 @@ function App() {
       />
     );
   } else if (activePage === "Request Tracker") {
-    displayedPage = <RequestTracker />;
+    displayedPage = (
+      <RequestTracker
+        setRequestToAdd={setRequestToAdd}
+        setActivePage={setActivePage}
+      />
+    );
   }
 
   const handleHomeClick = () => {
