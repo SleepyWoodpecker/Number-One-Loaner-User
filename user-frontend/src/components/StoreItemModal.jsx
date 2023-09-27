@@ -88,7 +88,7 @@ function StoreItemModal({
     }
 
     if (hasSizes && !size) {
-      showFeedbackMessage("Select a size!", "red", setMessage, 3500);
+      showFeedbackMessage("Select a size/variation!", "red", setMessage, 3500);
       return;
     }
 

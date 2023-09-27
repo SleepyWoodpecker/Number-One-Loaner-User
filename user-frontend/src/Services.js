@@ -32,4 +32,18 @@ const sendEmail = async (receiver, requestId) => {
   return response;
 };
 
-export { getStoreItems, submitNewRequest, requestSearch, sendEmail };
+const editRequest = async (requestId, newRequest) => {
+  const { data: response } = await axios.put(
+    `${requestBaseUrl}/${requestId}`,
+    newRequest
+  );
+  return response;
+};
+
+export {
+  getStoreItems,
+  submitNewRequest,
+  requestSearch,
+  sendEmail,
+  editRequest,
+};

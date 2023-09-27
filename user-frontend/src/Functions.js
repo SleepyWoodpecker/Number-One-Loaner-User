@@ -17,7 +17,6 @@ function getMinDay() {
 }
 
 function convertStringToDate(dateString) {
-  console.log(dateString);
   const dateArray = dateString.split("-");
   // since the months are zero indexed, take the month -1
   dateArray[1]--;

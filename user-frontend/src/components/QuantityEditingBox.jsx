@@ -3,7 +3,13 @@ import { BsCheck2, BsX } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 
-function QuantityEditingBox({ order, totalOrder, setTotalOrder, removeItem }) {
+function QuantityEditingBox({
+  order,
+  totalOrder,
+  setTotalOrder,
+  removeItem,
+  width = 32,
+}) {
   const originalQuantity = useRef(order.quantity);
   const [isEditing, setIsEditing] = useState(false);
   // must remember to change both the quantity and the original quantity I guess
@@ -37,8 +43,8 @@ function QuantityEditingBox({ order, totalOrder, setTotalOrder, removeItem }) {
 
   return (
     <div className="flex justify-between">
-      <div className="flex justify-center w-32 items-center text-sm">
-        {order.name} -{" "}
+      <div className={`flex justify-center w-${width} items-center text-sm`}>
+        {order.name}
         {isEditing ? (
           <input
             className=" focus-visible:outline-orange-500 border-2 w-9 text-center rounded-sm"

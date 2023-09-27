@@ -55,7 +55,9 @@ function RequestTracker() {
   if (requestData === null) {
     requestDisplay = "";
   } else if (requestData.id) {
-    requestDisplay = <RequestTable requestData={requestData} />;
+    requestDisplay = (
+      <RequestTable requestData={requestData} setRequestData={setRequestData} />
+    );
   } else if (requestData.error || requestData === "") {
     requestDisplay = showMessage && (
       <MessageBox color={"red"}>{requestData.error}</MessageBox>
@@ -80,7 +82,7 @@ function RequestTracker() {
         {showLastRecord && (
           <>
             <div onClick={getLatestRequest}>
-              <div className="p-2 pt-5 w-full flex justify-between items-center border-2 border-t-0 rounded-b-lg text-sm">
+              <div className="p-2 pt-5 w-full flex justify-between items-center border-2 border-t-0 rounded-b-lg text-sm z-20">
                 Use last request submitted on this device
                 <LuHistory />
               </div>

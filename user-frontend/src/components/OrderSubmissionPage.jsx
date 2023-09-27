@@ -49,7 +49,6 @@ function OrderSubmissionPage({ totalOrder, setTotalOrder }) {
         3500
       );
       // if the request is successfully submitted, save a local copy of the request
-      localStorage.clear();
       localStorage.setItem("requestId", request.id);
     }
     setEmail("");

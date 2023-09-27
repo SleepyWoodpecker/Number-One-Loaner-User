@@ -60,10 +60,10 @@ requestRouter.post("/", async (req, res) => {
 });
 
 requestRouter.put("/:id", async (req, res) => {
-  const updatedRequest = req.body;
+  console.log(req.params.id);
   const savedRequest = await Request.findByIdAndUpdate(
     req.params.id,
-    updatedRequest,
+    { requestedItems: req.body.requestedItems },
     { new: true }
   );
   res.status(200).send(savedRequest);
