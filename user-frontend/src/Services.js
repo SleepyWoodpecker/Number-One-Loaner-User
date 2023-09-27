@@ -1,4 +1,5 @@
 import axios from "axios";
+import { showFeedbackMessage } from "./Functions";
 const storeBaseUrl = "/api/store";
 const requestBaseUrl = "/api/request";
 const emailBaseUrl = "/api/email";
@@ -40,10 +41,42 @@ const editRequest = async (requestId, newRequest) => {
   return response;
 };
 
+const addToRequestFromStore = async (requestId, itemToAdd, setMessage) => {
+  const originalRequest = await requestSearch(requestId);
+  // check if the added item is inside the list alr
+  if (
+    originalRequest.requestedItems.findIndex(
+      (originalRequestItem) => originalRequestItem.id === itemToAdd.id
+    ) !== -1
+  ) {
+    showFeedbackMessage(
+      `${itemToAdd.name} is already in your request`,
+      "yellow",
+      setMessage,
+      4500
+    );
+    return;
+  }
+  const modifiedRequestedItems =
+    originalRequest.requestedItems.concat(itemToAdd);
+  const updatedOrder = await editRequest(requestId, {
+    ...originalRequest,
+    requestedItems: modifiedRequestedItems,
+  });
+  showFeedbackMessage(
+    `${itemToAdd.name} added to your request`,
+    "green",
+    setMessage,
+    3000
+  );
+  return updatedOrder;
+};
+
 export {
   getStoreItems,
   submitNewRequest,
   requestSearch,
   sendEmail,
   editRequest,
+  addToRequestFromStore,
 };

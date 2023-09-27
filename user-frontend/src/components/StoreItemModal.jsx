@@ -7,6 +7,7 @@ import {
   validateQuantity,
   variationLabel,
 } from "../Functions";
+import { addToRequestFromStore } from "../Services";
 
 function StoreItemModal({
   closeModal,
@@ -15,6 +16,7 @@ function StoreItemModal({
   setTotalOrder,
   setMessage,
   sizedItems,
+  requestToAdd,
 }) {
   const hasSizes = storeItem.sizes.length > 0;
   // console.log(totalOrder);
@@ -73,7 +75,7 @@ function StoreItemModal({
     );
   }
 
-  const submitForm = (e, storeItemData) => {
+  const submitForm = async (e, storeItemData) => {
     e.preventDefault();
     // should add some checking to update the new quantity of the item
     // only add the order if the quantity is positive
@@ -92,9 +94,11 @@ function StoreItemModal({
       return;
     }
 
+    // nneed to make an additional check here based on that status
     if (quantity > 0 && !hasSizes) {
       // check if the store item already exists in the cart
       if (
+        !requestToAdd &&
         totalOrder.findIndex((order) => order.id === storeItemData.id) !== -1
       ) {
         showFeedbackMessage(
@@ -111,10 +115,11 @@ function StoreItemModal({
 
     let newItem, requestedStoreItem;
 
+    // if the item is a sized item
     if (hasSizes) {
       sizedItems.current.forEach((sizedItem) => {
-        // eslint-disable-next-line
         const [itemName, itemSize] = sizedItem.name.split(" - ");
+        // match the selected item to its entry in the DB
         if (
           itemName === storeItem.name &&
           (`(Size ${size})` === itemSize || `(${size})` === itemSize)
@@ -131,7 +136,10 @@ function StoreItemModal({
           requestedStoreItem = sizedItem;
         }
       });
-      if (totalOrder.findIndex((order) => order.id === newItem.id) !== -1) {
+      if (
+        !requestToAdd &&
+        totalOrder.findIndex((order) => order.id === newItem.id) !== -1
+      ) {
         showFeedbackMessage(
           `${newItem.name} is already in the cart`,
           "yellow",
@@ -141,21 +149,29 @@ function StoreItemModal({
         closeModal();
         return;
       } else {
-        setTotalOrder((totalOrder) => totalOrder.concat(newItem));
+        if (requestToAdd) {
+          await addToRequestFromStore(requestToAdd, newItem, setMessage);
+        } else {
+          setTotalOrder((totalOrder) => totalOrder.concat(newItem));
+        }
       }
     } else {
-      setTotalOrder((previousOrder) => {
-        newItem = {
-          id: storeItemData.id,
-          name: storeItemData.name,
-          quantity,
-          originalQuantity: quantity,
-          returnedQuantity: 0,
-          imgUrl: storeItemData.imgUrl,
-        };
-        requestedStoreItem = storeItemData;
-        return previousOrder.concat(newItem);
-      });
+      newItem = {
+        id: storeItemData.id,
+        name: storeItemData.name,
+        quantity,
+        originalQuantity: quantity,
+        returnedQuantity: 0,
+        imgUrl: storeItemData.imgUrl,
+      };
+      requestedStoreItem = storeItemData;
+      if (requestToAdd) {
+        await addToRequestFromStore(requestToAdd, newItem, setMessage);
+      } else {
+        setTotalOrder((previousOrder) => {
+          return previousOrder.concat(newItem);
+        });
+      }
     }
 
     // should figure out if i can do some animation
@@ -168,9 +184,9 @@ function StoreItemModal({
         setMessage,
         4500
       );
-    } else {
+    } else if (!requestToAdd) {
       showFeedbackMessage(
-        `${storeItemData.name} added to cart`,
+        `${storeItemData.name} added to order`,
         "green",
         setMessage,
         1000

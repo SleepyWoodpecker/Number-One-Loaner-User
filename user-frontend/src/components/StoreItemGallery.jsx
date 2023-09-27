@@ -9,6 +9,7 @@ function StoreItemGallery({
   setStoreItems,
   sizedItems,
   originalStore,
+  requestToAdd,
 }) {
   const [searchInput, setSearchInput] = useState("");
 
@@ -22,6 +23,7 @@ function StoreItemGallery({
             key={storeItemData.id}
             setTotalOrder={setTotalOrder}
             sizedItems={sizedItems}
+            requestToAdd={requestToAdd}
           />
         ));
 
@@ -43,8 +45,20 @@ function StoreItemGallery({
     return;
   };
 
+  let addingStatus = "";
+
+  if (requestToAdd) {
+    addingStatus = (
+      <>
+        <button>back</button>
+        <div className="bg-green-200">You are editing a request</div>
+      </>
+    );
+  }
+
   return (
     <div className="flex justify-evenly flex-col h-full">
+      {addingStatus}
       <SearchBar
         placeholder="Search Store Items"
         handleSearchInput={handleSearchInput}

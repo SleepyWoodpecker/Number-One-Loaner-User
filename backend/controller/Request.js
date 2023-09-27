@@ -60,7 +60,6 @@ requestRouter.post("/", async (req, res) => {
 });
 
 requestRouter.put("/:id", async (req, res) => {
-  console.log(req.params.id);
   const savedRequest = await Request.findByIdAndUpdate(
     req.params.id,
     { requestedItems: req.body.requestedItems },

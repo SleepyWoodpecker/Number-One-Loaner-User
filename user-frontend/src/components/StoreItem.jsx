@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import StoreItemModal from "./StoreItemModal";
 
-function StoreItem({ storeItemData, totalOrder, setTotalOrder, sizedItems }) {
+function StoreItem({
+  storeItemData,
+  totalOrder,
+  setTotalOrder,
+  sizedItems,
+  requestToAdd,
+}) {
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState("");
   const openModal = () => setShowModal(true);
@@ -28,6 +34,7 @@ function StoreItem({ storeItemData, totalOrder, setTotalOrder, sizedItems }) {
             setTotalOrder={setTotalOrder}
             setMessage={setMessage}
             sizedItems={sizedItems}
+            requestToAdd={requestToAdd}
           />
         )}
       </div>

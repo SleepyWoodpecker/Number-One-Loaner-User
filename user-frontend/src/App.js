@@ -16,6 +16,7 @@ function App() {
   const [storeItems, setStoreItems] = useState([]);
   const sizedItems = useRef([]);
   const consolidatedItems = useRef(null);
+  const [requestToAdd, setRequestToAdd] = useState("6513bb55c682fba2ebe20b50");
 
   useEffect(() => {
     const sotreItemsRequest = async () => {
@@ -39,6 +40,7 @@ function App() {
         setStoreItems={setStoreItems}
         sizedItems={sizedItems}
         originalStore={consolidatedItems}
+        requestToAdd={requestToAdd}
       />
     );
   } else if (activePage === "Shopping Cart") {
