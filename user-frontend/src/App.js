@@ -15,12 +15,14 @@ function App() {
   // shifted the useEffect here because I did not want multiple fetch requests to the server everytime the user clicked on the catalogue page
   const [storeItems, setStoreItems] = useState([]);
   const sizedItems = useRef([]);
+  const consolidatedItems = useRef(null);
 
   useEffect(() => {
     const sotreItemsRequest = async () => {
       const storeItemsList = await getStoreItems();
-      setStoreItems(storeItemsList.items);
       sizedItems.current = storeItemsList.sizedItems;
+      consolidatedItems.current = storeItemsList.items;
+      setStoreItems(storeItemsList.items);
     };
     sotreItemsRequest();
   }, []);
@@ -36,6 +38,7 @@ function App() {
         storeItems={storeItems}
         setStoreItems={setStoreItems}
         sizedItems={sizedItems}
+        originalStore={consolidatedItems}
       />
     );
   } else if (activePage === "Shopping Cart") {

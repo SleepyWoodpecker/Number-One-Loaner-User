@@ -10,13 +10,13 @@ function StoreItem({ storeItemData, totalOrder, setTotalOrder, sizedItems }) {
   return (
     <>
       {message}
-      <div className="rounded-xl shadow-lg p-2 flex items-center jutstify-around m-1 border-2">
+      <div className="rounded-xl shadow-lg p-2 flex items-center jutstify-around m-1 border-2 w-36 h-44">
         <div onClick={openModal} className="">
           <img
             src={storeItemData.imgUrl}
             alt={storeItemData.name}
             // to ensure that the items remain centered, these values have to be numbers instead of percentages
-            className="w-32 h-32 rounded"
+            className="w-32 h-32 rounded mx-auto"
           />
           <h2 className="text-center">{storeItemData.name}</h2>
         </div>

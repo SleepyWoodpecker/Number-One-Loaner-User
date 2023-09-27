@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import StoreItem from "./StoreItem";
 import SearchBar from "./SearchBar";
 
@@ -8,9 +8,10 @@ function StoreItemGallery({
   storeItems,
   setStoreItems,
   sizedItems,
+  originalStore,
 }) {
   const [searchInput, setSearchInput] = useState("");
-  const originalStore = useRef(storeItems);
+
   let storeItemsDisplay =
     storeItems.length === 0
       ? "LOADING..."
@@ -27,9 +28,14 @@ function StoreItemGallery({
   const handleSearchInput = (e) => {
     const input = e.target.value;
     setSearchInput(input);
-    storeItemsDisplay = originalStore.current.filter((storeItem) =>
-      storeItem.name.toLowerCase().includes(input.toLowerCase())
-    );
+    if (input === "") {
+      storeItemsDisplay = originalStore.current;
+    } else {
+      storeItemsDisplay = originalStore.current.filter((storeItem) =>
+        storeItem.name.toLowerCase().includes(input.toLowerCase())
+      );
+    }
+
     setStoreItems(storeItemsDisplay);
   };
 
