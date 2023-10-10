@@ -21,6 +21,10 @@ const storeSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
+  category: {
+    type: String,
+    required: true,
+  },
 });
 
 // if this is not working, it means that you missed out the tansform option
