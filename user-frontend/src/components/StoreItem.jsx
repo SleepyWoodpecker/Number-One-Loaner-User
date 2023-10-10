@@ -13,6 +13,11 @@ function StoreItem({
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
 
+  let displayedName = storeItemData.name;
+  if (storeItemData.name.length > 15) {
+    displayedName = `${storeItemData.name.slice(0, 13)}...`;
+  }
+
   return (
     <>
       {message}
@@ -24,7 +29,7 @@ function StoreItem({
             // to ensure that the items remain centered, these values have to be numbers instead of percentages
             className="w-32 h-32 rounded mx-auto"
           />
-          <h2 className="text-center">{storeItemData.name}</h2>
+          <h2 className="text-center">{displayedName}</h2>
         </div>
         {showModal && (
           <StoreItemModal
