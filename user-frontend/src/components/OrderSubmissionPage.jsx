@@ -4,7 +4,7 @@ import OrderSummary from "./OrderSubmissionPartOne";
 import OrderSubmissionPartTwo from "./OrderSubmissionPartTwo";
 import OrderSubmissionPartThree from "./OrderSubmissionPartThree";
 import OrderProgressBar from "./OrderProgressBar";
-import { showFeedbackMessage } from "../Functions";
+import { capitaliseFirstLetter, showFeedbackMessage } from "../Functions";
 
 function OrderSubmissionPage({ totalOrder, setTotalOrder }) {
   const [name, setName] = useState("");
@@ -21,6 +21,27 @@ function OrderSubmissionPage({ totalOrder, setTotalOrder }) {
   const submitOrder = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    const fields = { name, unit, email, number };
+    const missingFields = [];
+    for (const [field, value] of Object.entries(fields)) {
+      if (!value) {
+        missingFields.push(capitaliseFirstLetter(field.toString()));
+      }
+    }
+
+    if (missingFields.length !== 0) {
+      showFeedbackMessage(
+        `Cannot submit request as the following fields are empty: ${missingFields.join(
+          ", "
+        )}`,
+        "red",
+        setMessage,
+        3500
+      );
+      setIsSubmitting(false);
+      return;
+    }
 
     if (!email.includes("@")) {
       showFeedbackMessage(`Email is invalid`, "red", setMessage, 3500);

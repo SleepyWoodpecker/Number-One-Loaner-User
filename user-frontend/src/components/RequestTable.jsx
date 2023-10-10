@@ -68,7 +68,7 @@ function RequestTable({
   };
 
   return (
-    <div className="w-full mx-2 flex flex-col mt-8">
+    <div className="w-full mx-2 flex flex-col mt-8 mb-12">
       {/* show sizing date */}
       <div className="w-full flex justify-between">
         <h1 className="font-semibold text-lg">{displayDate}</h1>

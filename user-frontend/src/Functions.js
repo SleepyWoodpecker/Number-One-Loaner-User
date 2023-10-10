@@ -47,6 +47,11 @@ function storeHasStock(storeItem, requestedItem) {
   return Number(requestedItem.quantity) <= storeItem.quantity;
 }
 
+function capitaliseFirstLetter(string) {
+  const [firstLetter, otherLetters] = [string.slice(0, 1), string.slice(1)];
+  return [firstLetter.toUpperCase(), otherLetters.toLowerCase()].join("");
+}
+
 export {
   getMinDay,
   showFeedbackMessage,
@@ -54,4 +59,5 @@ export {
   validateQuantity,
   variationLabel,
   storeHasStock,
+  capitaliseFirstLetter,
 };
