@@ -13,7 +13,7 @@ function App() {
   const [totalOrder, setTotalOrder] = useState([]);
 
   // shifted the useEffect here because I did not want multiple fetch requests to the server everytime the user clicked on the catalogue page
-  const [storeItems, setStoreItems] = useState([]);
+  const [storeItems, setStoreItems] = useState(null);
   const sizedItems = useRef([]);
   const consolidatedItems = useRef(null);
   const [requestToAdd, setRequestToAdd] = useState(null);
@@ -28,7 +28,15 @@ function App() {
     sotreItemsRequest();
   }, []);
 
-  /* in the future can expand here by putting numbers on the basket */
+  let categories;
+
+  if (storeItems) {
+    const unqiueCategories = new Set(
+      consolidatedItems.current.map((storeItem) => storeItem.category)
+    );
+    categories = ["all", ...unqiueCategories];
+  }
+
   let displayedPage;
 
   if (activePage === "Home") {
@@ -42,6 +50,7 @@ function App() {
         originalStore={consolidatedItems}
         requestToAdd={requestToAdd}
         setRequestToAdd={setRequestToAdd}
+        categories={categories}
       />
     );
   } else if (activePage === "Shopping Cart") {

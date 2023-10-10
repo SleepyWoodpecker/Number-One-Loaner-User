@@ -12,9 +12,11 @@ function StoreItemGallery({
   originalStore,
   requestToAdd,
   setRequestToAdd,
+  categories,
 }) {
   const [searchInput, setSearchInput] = useState("");
   const [message, setMessage] = useState("");
+  const [chosenCategory, setChosenCategory] = useState("All");
 
   useEffect(() => {
     if (requestToAdd) {
@@ -27,10 +29,18 @@ function StoreItemGallery({
     }
   }, [requestToAdd]);
 
-  let storeItemsDisplay =
-    storeItems.length === 0
-      ? "LOADING..."
-      : storeItems.map((storeItemData) => (
+  let storeItemsDisplay;
+
+  if (storeItems === null) {
+    return <div className="flex justify-center items-center">LOADING...</div>;
+  }
+
+  if (storeItems) {
+    storeItemsDisplay =
+      storeItems.length === 0 ? (
+        <div className="flex justify-center items-center">Item not found</div>
+      ) : (
+        storeItems.map((storeItemData) => (
           <StoreItem
             storeItemData={storeItemData}
             totalOrder={totalOrder}
@@ -39,7 +49,23 @@ function StoreItemGallery({
             sizedItems={sizedItems}
             requestToAdd={requestToAdd}
           />
-        ));
+        ))
+      );
+  }
+
+  const handleFilterChange = (e) => {
+    const newCategory = e.target.value;
+    setSearchInput("");
+    setChosenCategory(newCategory);
+    if (newCategory === "all") {
+      setStoreItems(originalStore.current);
+      return;
+    }
+    storeItemsDisplay = originalStore.current.filter(
+      (storeItem) => storeItem.category === newCategory
+    );
+    setStoreItems(storeItemsDisplay);
+  };
 
   const handleSearchInput = (e) => {
     const input = e.target.value;
@@ -79,13 +105,18 @@ function StoreItemGallery({
       {message}
       {addingStatus}
       <SearchBar
-        placeholder="Search Store Items"
+        categories={categories}
+        filter={chosenCategory}
+        handleFilterChange={handleFilterChange}
+        placeholder={`Search in ${
+          chosenCategory === "all" ? "store" : chosenCategory
+        } items...`}
         handleSearchInput={handleSearchInput}
         handleRequestSearch={handleRequestSearch}
         value={searchInput}
       />
       <div
-        className="flex justify-around flex-wrap overflow-y-scroll"
+        className="flex justify-around flex-wrap overflow-y-scroll items-center"
         style={{ height: "34.5rem" }}
       >
         {storeItemsDisplay}
