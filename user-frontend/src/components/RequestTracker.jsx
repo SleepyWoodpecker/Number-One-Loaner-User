@@ -4,8 +4,9 @@ import { requestSearch } from "../Services";
 import MessageBox from "./MessageBox";
 import RequestTable from "./RequestTable";
 import { LuHistory } from "react-icons/lu";
+import { IoIosHelpCircleOutline } from "react-icons/io";
 
-function RequestTracker({ setRequestToAdd, setActivePage }) {
+function RequestTracker({ setRequestToAdd, activePage, setActivePage }) {
   const [searchId, setSearchId] = useState("");
   const [requestData, setRequestData] = useState(null);
   const [showMessage, setShowMessage] = useState(false);
@@ -100,6 +101,12 @@ function RequestTracker({ setRequestToAdd, setActivePage }) {
       <div className="flex justify-center items-center m-3 mt-5">
         {showRequestRetrieval}
       </div>
+      <IoIosHelpCircleOutline
+        size={35}
+        onClick={() => setActivePage("Contact Us")}
+        style={{ color: "#706f6d", strokeWidth: "3", top: "40rem", right: 8 }}
+        className="fixed"
+      />
     </div>
   );
 }

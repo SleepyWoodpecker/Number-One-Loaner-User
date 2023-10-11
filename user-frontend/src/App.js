@@ -7,9 +7,10 @@ import { FiShoppingCart } from "react-icons/fi";
 import { AiOutlineFileSearch } from "react-icons/ai";
 import { getStoreItems } from "./Services";
 import TopBar from "./components/TopBar";
+import ContactUs from "./components/ContactUs";
 
 function App() {
-  const [activePage, setActivePage] = useState("Home");
+  const [activePage, setActivePage] = useState("Contact Us");
   const [totalOrder, setTotalOrder] = useState([]);
 
   // shifted the useEffect here because I did not want multiple fetch requests to the server everytime the user clicked on the catalogue page
@@ -64,24 +65,13 @@ function App() {
     displayedPage = (
       <RequestTracker
         setRequestToAdd={setRequestToAdd}
+        activePage={activePage}
         setActivePage={setActivePage}
       />
     );
+  } else if (activePage === "Contact Us") {
+    displayedPage = <ContactUs setActivePage={setActivePage} />;
   }
-
-  const handleHomeClick = () => {
-    setActivePage("Home");
-    // show Home
-  };
-
-  const handleShoppingCartClick = () => {
-    setActivePage("Shopping Cart");
-    // show shopping cart
-  };
-
-  const handleSearchClick = () => {
-    setActivePage("Request Tracker");
-  };
 
   return (
     <div
@@ -92,7 +82,7 @@ function App() {
       {displayedPage}
       {/* // this is the nav bar at the bottom, but the nav bar cannot accommodate clicking  */}
       <div
-        className="bg-orange-200 fixed bottom-0 left-0 right-0 pb-2 h-12 "
+        className="bg-orange-200 fixed bottom-0 left-0 right-0 pb-2 h-12"
         style={{
           boxShadow:
             "0 -4px 6px -1px rgb(0 0 0 / 0.1), 0 -2px 4px -2px rgb(0 0 0 / 0.1)",
@@ -102,7 +92,7 @@ function App() {
           <li>
             <AiOutlineFileSearch
               size={30}
-              onClick={handleSearchClick}
+              onClick={() => setActivePage("Request Tracker")}
               style={{
                 color: activePage === "Request Tracker" ? "black" : "#bfbdbd",
               }}
@@ -111,7 +101,7 @@ function App() {
           <li>
             <RiHome2Line
               size={30}
-              onClick={handleHomeClick}
+              onClick={() => setActivePage("Home")}
               style={{
                 color: activePage === "Home" ? "black" : "#bfbdbd",
               }}
@@ -120,7 +110,7 @@ function App() {
           <li>
             <FiShoppingCart
               size={30}
-              onClick={handleShoppingCartClick}
+              onClick={() => setActivePage("Shopping Cart")}
               style={{
                 color: activePage === "Shopping Cart" ? "black" : "#bfbdbd",
               }}

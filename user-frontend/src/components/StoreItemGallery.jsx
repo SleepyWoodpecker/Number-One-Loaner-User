@@ -32,13 +32,25 @@ function StoreItemGallery({
   let storeItemsDisplay;
 
   if (storeItems === null) {
-    return <div className="flex justify-center items-center">LOADING...</div>;
+    return (
+      <div
+        className="flex justify-center items-center"
+        style={{ height: "30rem" }}
+      >
+        LOADING...
+      </div>
+    );
   }
 
   if (storeItems) {
     storeItemsDisplay =
       storeItems.length === 0 ? (
-        <div className="flex justify-center items-center">Item not found</div>
+        <div
+          className="flex justify-center items-center"
+          style={{ height: "30rem" }}
+        >
+          Item not found
+        </div>
       ) : (
         storeItems.map((storeItemData) => (
           <StoreItem
@@ -70,8 +82,14 @@ function StoreItemGallery({
   const handleSearchInput = (e) => {
     const input = e.target.value;
     setSearchInput(input);
-    if (input === "") {
+    if (input === "" && chosenCategory === "all") {
       storeItemsDisplay = originalStore.current;
+    } else if (chosenCategory !== "all") {
+      storeItemsDisplay = originalStore.current.filter(
+        (storeItem) =>
+          storeItem.name.toLowerCase().includes(input.toLowerCase()) &&
+          storeItem.category === chosenCategory
+      );
     } else {
       storeItemsDisplay = originalStore.current.filter((storeItem) =>
         storeItem.name.toLowerCase().includes(input.toLowerCase())
@@ -101,7 +119,7 @@ function StoreItemGallery({
     );
 
   return (
-    <div className="flex justify-evenly flex-col h-full">
+    <div className="flex justify-start flex-col h-full">
       {message}
       {addingStatus}
       <SearchBar
@@ -117,7 +135,7 @@ function StoreItemGallery({
       />
       <div
         className="flex justify-around flex-wrap overflow-y-scroll items-center"
-        style={{ height: "34.5rem" }}
+        style={{ maxHeight: "34.5rem" }}
       >
         {storeItemsDisplay}
       </div>
