@@ -104,7 +104,7 @@ function RequestTracker({ setRequestToAdd, activePage, setActivePage }) {
       <IoIosHelpCircleOutline
         size={35}
         onClick={() => setActivePage("Contact Us")}
-        style={{ color: "#706f6d", strokeWidth: "3", top: "40rem", right: 8 }}
+        style={{ color: "#706f6d", strokeWidth: "3", top: "39rem", right: 8 }}
         className="fixed"
       />
     </div>

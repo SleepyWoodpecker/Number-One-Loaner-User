@@ -44,7 +44,7 @@ function QuantityEditingBox({
   return (
     <div className="flex justify-between">
       <div className={`flex justify-center w-${width} items-center text-sm`}>
-        {order.name}
+        {`${order.name} - `}
         {isEditing ? (
           <input
             className=" focus-visible:outline-orange-500 border-2 w-9 text-center rounded-sm"

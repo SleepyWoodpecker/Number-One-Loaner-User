@@ -135,7 +135,7 @@ function StoreItemGallery({
       />
       <div
         className="flex justify-around flex-wrap overflow-y-scroll items-center"
-        style={{ maxHeight: "34.5rem" }}
+        style={{ maxHeight: "39rem" }}
       >
         {storeItemsDisplay}
       </div>

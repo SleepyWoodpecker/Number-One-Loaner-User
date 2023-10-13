@@ -10,7 +10,7 @@ import TopBar from "./components/TopBar";
 import ContactUs from "./components/ContactUs";
 
 function App() {
-  const [activePage, setActivePage] = useState("Contact Us");
+  const [activePage, setActivePage] = useState("Home");
   const [totalOrder, setTotalOrder] = useState([]);
 
   // shifted the useEffect here because I did not want multiple fetch requests to the server everytime the user clicked on the catalogue page
