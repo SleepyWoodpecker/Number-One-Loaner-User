@@ -109,12 +109,10 @@ function StoreItemModal({
         );
         closeModal();
         return;
-        // Sheesh
       }
     }
 
     let newItem, requestedStoreItem;
-
     // if the item is a sized item
     if (hasSizes) {
       sizedItems.current.forEach((sizedItem) => {
@@ -173,8 +171,6 @@ function StoreItemModal({
         });
       }
     }
-
-    // should figure out if i can do some animation
 
     // tell user if the store does not currently have enough quantity to satisfy the order
     if (!storeHasStock(requestedStoreItem, newItem)) {
